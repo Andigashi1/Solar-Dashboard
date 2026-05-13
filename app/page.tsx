@@ -12,19 +12,29 @@ const PLANETS = [
   "jupiter", "saturne", "uranus", "neptune"
 ]
 
-const [planetsRes, apodRes] = await Promise.all([
-  Promise.all(
-    PLANETS.map((id) =>
-      fetch(`https://api.le-systeme-solaire.net/rest/bodies/${id}`, {
-        next: { revalidate: 86400 },
-        headers: { Authorization: `Bearer ${process.env.SOLAR_API_KEY}` },
-      }).then((r) => r.json())
-    )
-  ),
-  fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`, {
-    next: { revalidate: 86400 },
-  }).then((r) => r.json()),
-])
+const planetsRes = await Promise.all(
+  PLANETS.map((id) =>
+    fetch(`https://api.le-systeme-solaire.net/rest/bodies/${id}`, {
+      next: { revalidate: 86400 },
+      headers: { Authorization: `Bearer ${process.env.SOLAR_API_KEY}` },
+    })
+      .then((r) => {
+        if (!r.ok) throw new Error(`Failed: ${r.status}`)
+        return r.json()
+      })
+      .catch(() => null)
+  )
+)
+
+// filter out any failed fetches
+const planets = planetsRes.filter(Boolean)
+
+const apodRes = await fetch(
+  `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`,
+  { next: { revalidate: 86400 } }
+)
+  .then((r) => r.json())
+  .catch(() => null)
 
 const results = await Promise.all(
   PLANETS.map((id) =>
@@ -43,7 +53,7 @@ const results = await Promise.all(
       <Nav/>
       <Hero/>
       <Explore planets={results}/>
-      <Apod data={apodRes}/>
+      {apodRes && <Apod data={apodRes}/>}
       <Footer/>
     </div>
   );
