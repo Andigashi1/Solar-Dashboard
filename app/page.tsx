@@ -47,6 +47,15 @@ const results = await Promise.all(
   )
 )
 
+const testRes = await fetch(
+  `https://api.le-systeme-solaire.net/rest/bodies/terre`,
+  {
+    headers: { Authorization: `Bearer ${process.env.SOLAR_API_KEY}` },
+  }
+)
+console.log("STATUS:", testRes.status)
+console.log("SOLAR_API_KEY exists:", !!process.env.SOLAR_API_KEY)
+
   return (
     <div className="">
       <Canvas/>
