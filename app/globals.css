@@ -1,26 +1,77 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Fonts */
+  --font-display: var(--font-syne);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+
+  /* Background & Surface */
+  --color-bg:               #0a0a0f;
+  --color-surface:          #0f0f1a;
+  --color-surface-elevated: #1a1a2e;
+
+  /* Borders */
+  --color-border:           oklch(100% 0 0 / 6%);
+
+  /* Accents */
+  --color-violet:           #6c63ff;
+  --color-cyan:             #00d4ff;
+  --color-danger:           #ff6b6b;
+
+  /* Text */
+  --color-text-primary:     #f0f0ff;
+  --color-text-secondary:   #8888aa;
+  --color-text-muted:       #44445a;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .h-screen {
+    height: 100dvh;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .scrollbar-violet::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .scrollbar-violet::-webkit-scrollbar-track {
+    background: var(--color-surface);
+  }
+
+  .scrollbar-violet::-webkit-scrollbar-thumb {
+    background: var(--color-violet);
+    border-radius: 999px;
+  }
+
+  .scrollbar-violet::-webkit-scrollbar-thumb:hover {
+    background: var(--color-cyan);
+  }
 }
