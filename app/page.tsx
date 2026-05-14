@@ -11,16 +11,14 @@ export default async function Home() {
     ? `https://${process.env.VERCEL_URL}` 
     : `http://localhost:${process.env.PORT || 3000}`
 
-const apodRes = await fetch(
-  `${baseUrl}/api/apod`,
-  { next: { revalidate: 86400 } }
-)
-  .then((r) => r.json())
-  .catch(() => null)
+  const apodRes = await fetch(
+    `${baseUrl}/api/apod`,
+    { next: { revalidate: 86400 } }
+  )
+    .then((r) => r.json())
+    .catch(() => null)
 
-// NASA returns an error object with a "code" field on failure
-const apod = apodRes?.media_type ? apodRes : null
-
+  
   return (
     <div className="">
       <Canvas/>
