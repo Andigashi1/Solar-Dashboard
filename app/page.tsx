@@ -21,6 +21,8 @@ const apodRes = await fetch(
   .then((r) => r.json())
   .catch(() => null)
 
+  console.log("APOD:", apodRes)
+  console.log("NASA KEY exists:", !!process.env.NASA_API_KEY)
 
   return (
     <div className="">
