@@ -7,15 +7,12 @@ import Hero from "./components/Hero";
 import Nav from "./components/Nav";
 
 export default async function Home() {
-
-const PLANETS = [
-  "mercure", "venus", "terre", "mars",
-  "jupiter", "saturne", "uranus", "neptune"
-]
-
+  const baseUrl = process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : `http://localhost:${process.env.PORT || 3000}`
 
 const apodRes = await fetch(
-  `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`,
+  `${baseUrl}/api/apod`,
   { next: { revalidate: 86400 } }
 )
   .then((r) => r.json())
