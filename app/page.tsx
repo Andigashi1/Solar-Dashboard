@@ -1,3 +1,4 @@
+import { PLANETS_DATA } from "@/lib/planetsData";
 import Apod from "./components/Apod";
 import Canvas from "./components/Canvas";
 import Explore from "./components/Explore";
@@ -12,22 +13,6 @@ const PLANETS = [
   "jupiter", "saturne", "uranus", "neptune"
 ]
 
-const planetsRes = await Promise.all(
-  PLANETS.map((id) =>
-    fetch(`https://api.le-systeme-solaire.net/rest/bodies/${id}`, {
-      next: { revalidate: 86400 },
-      headers: { Authorization: `Bearer ${process.env.SOLAR_API_KEY}` },
-    })
-      .then((r) => {
-        if (!r.ok) throw new Error(`Failed: ${r.status}`)
-        return r.json()
-      })
-      .catch(() => null)
-  )
-)
-
-// filter out any failed fetches
-const planets = planetsRes.filter(Boolean)
 
 const apodRes = await fetch(
   `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`,
@@ -36,32 +21,13 @@ const apodRes = await fetch(
   .then((r) => r.json())
   .catch(() => null)
 
-const results = await Promise.all(
-  PLANETS.map((id) =>
-    fetch(`https://api.le-systeme-solaire.net/rest/bodies/${id}`, {
-      next: { revalidate: 86400 },
-      headers: {
-        Authorization: `Bearer ${process.env.SOLAR_API_KEY}`,
-      },
-    }).then((res) => res.json())
-  )
-)
-
-const testRes = await fetch(
-  `https://api.le-systeme-solaire.net/rest/bodies/terre`,
-  {
-    headers: { Authorization: `Bearer ${process.env.SOLAR_API_KEY}` },
-  }
-)
-console.log("STATUS:", testRes.status)
-console.log("SOLAR_API_KEY exists:", !!process.env.SOLAR_API_KEY)
 
   return (
     <div className="">
       <Canvas/>
       <Nav/>
       <Hero/>
-      <Explore planets={results}/>
+      <Explore planets={PLANETS_DATA}/>
       {apodRes && <Apod data={apodRes}/>}
       <Footer/>
     </div>
