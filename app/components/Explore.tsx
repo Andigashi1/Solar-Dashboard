@@ -17,7 +17,7 @@ const Explore = ({ planets }: Props) => {
   return (
     <section
       id="explore"
-      className="w-full h-screen py-24  max-md:px-4 px-8"
+      className="w-full min-h-screen py-24  max-md:px-4 px-8"
     >
       <div className="px-8 mb-12">
         <h2 className="font-display font-bold uppercase tracking-widest text-4xl text-text-primary">

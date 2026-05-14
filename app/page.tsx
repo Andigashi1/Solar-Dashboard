@@ -18,6 +18,8 @@ const apodRes = await fetch(
   .then((r) => r.json())
   .catch(() => null)
 
+// NASA returns an error object with a "code" field on failure
+const apod = apodRes?.media_type ? apodRes : null
 
   return (
     <div className="">
