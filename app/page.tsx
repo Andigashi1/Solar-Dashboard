@@ -7,26 +7,23 @@ import Hero from "./components/Hero";
 import Nav from "./components/Nav";
 
 export default async function Home() {
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
-    : `http://localhost:${process.env.PORT || 3000}`
-
   const apodRes = await fetch(
-    `${baseUrl}/api/apod`,
-    { next: { revalidate: 86400 } }
+    `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`,
+    { cache: "no-store" }
   )
     .then((r) => r.json())
     .catch(() => null)
 
-  
+  const apod = apodRes?.media_type ? apodRes : null
+
   return (
-    <div className="">
-      <Canvas/>
-      <Nav/>
-      <Hero/>
-      <Explore planets={PLANETS_DATA}/>
-      {apodRes && <Apod data={apodRes}/>}
-      <Footer/>
+    <div>
+      <Canvas />
+      <Nav />
+      <Hero />
+      <Explore planets={PLANETS_DATA} />
+      {apod && <Apod data={apod} />}
+      <Footer />
     </div>
   );
 }
