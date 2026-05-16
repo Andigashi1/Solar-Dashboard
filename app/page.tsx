@@ -6,15 +6,8 @@ import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Nav from "./components/Nav";
 
-export default async function Home() {
-  const apodRes = await fetch(
-    `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`,
-    { cache: "no-store" }
-  )
-    .then((r) => r.json())
-    .catch(() => null)
+export default function Home() {
 
-  const apod = apodRes?.media_type ? apodRes : null
 
   return (
     <div>
@@ -22,7 +15,7 @@ export default async function Home() {
       <Nav />
       <Hero />
       <Explore planets={PLANETS_DATA} />
-      {apod && <Apod data={apod} />}
+      <Apod/>
       <Footer />
     </div>
   );
